@@ -1,0 +1,8 @@
+//commande à executer pour que le code fonctionnel
+
+g++ -c main.cpp -o main.o
+g++ -c voyageur.cpp -o voyageur.o
+
+//next
+
+g++ main.o voyageur.o -o programme
