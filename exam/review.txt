@@ -1,0 +1,32 @@
+Evitez les commentaires superflus, je me doute bien que main est la fonction principale du programme et je me doute bien que struct Ville {} définit le structure d'une ville.
+Votre code est suffisament clair de lui même. Ne vous infligez pas d'avoir à changer tous les commentaires le jour ou la définition d'une ville change par exemple.
+
+Les classes ont une responsabilité claire, certains noms pourraient être plus descriptifs (il faut connaitre le contexte pour savoir ce qu'est ville.x ou encore l/r dans le swap il faut être un peu averti)
+L’utilisation de std::vector pour stocker les villes et le chemin est appropriée. De plus, l’utilisation de std::move pour transférer le vecteur de villes dans le constructeur de Voyageur est une bonne pratique pour éviter les copies inutiles. vous semblez avoir compris certains points "délicats".
+Préférez les méthodes qui viennent avec les objets, cela vous permet de vous assurer que l'objet est "sensé" pouvoir faire ce que vous demandez, et vient souvent avec une meilleure gestion des erreurs (perm.get(i) au lieu de perm[i] par exemple)
+
+L'early return peut réduire assez facilement la difficulté à suivre ce qu'il se passe dans Voyageur::permute
+void Voyageur::permute(std::vector<int>& perm, int l, int r) {
+    if (l == r) {
+        double distance = 0.0;
+        for (int i = 1; i < perm.size(); ++i) {
+            distance += calculDistance(villes[perm[i - 1]], villes[perm[i]]);
+        }
+        distance += calculDistance(villes[perm.back()], villes[perm[0]]);
+        if (distance < meilleureDistance) {
+            meilleureDistance = distance;
+            chemin = perm;
+        }
+        return;
+    }
+
+    for (int i = l; i <= r; ++i) {
+        std::swap(perm[l], perm[i]);
+        permute(perm, l + 1, r);
+        std::swap(perm[l], perm[i]);
+    }
+}
+
+Permuter les pointeurs plutôt que les objets entiers peut être une bonne idée vu que la fonction swap créé une copie (pas forcément dans ce cas et cela peut compliquer le code pour rien, simplement sachez que c'est une possibilité)
+
+18/20
